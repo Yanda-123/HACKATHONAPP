@@ -12,6 +12,7 @@ import Questionnaire from "@/pages/questionnaire";
 import VideoConsultation from "@/pages/video-consultation";
 import Reminders from "@/pages/reminders";
 import FacialRecognition from "@/pages/facial-recognition";
+import Profile from "@/pages/profile";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -30,6 +31,7 @@ function Router() {
           <Route path="/video-consultation" component={VideoConsultation} />
           <Route path="/reminders" component={Reminders} />
           <Route path="/facial-recognition" component={FacialRecognition} />
+          <Route path="/profile" component={Profile} />
         </>
       )}
       <Route component={NotFound} />

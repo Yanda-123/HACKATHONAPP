@@ -10,6 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -23,97 +27,330 @@ interface Question {
   id: string;
   category: string;
   text: string;
-  options: { value: string; label: string; score: number }[];
+  type: 'radio' | 'checkbox' | 'input' | 'textarea' | 'select' | 'number';
+  options?: { value: string; label: string; score?: number }[];
+  required?: boolean;
 }
 
 const questions: Question[] = [
+  // Section 1: Personal Information
   {
-    id: "sleep1",
-    category: "sleep",
-    text: "How has your sleep been over the past week?",
+    id: "fullName",
+    category: "personal",
+    text: "Full Name",
+    type: "input",
+    required: true
+  },
+  {
+    id: "age",
+    category: "personal",
+    text: "Age",
+    type: "number",
+    required: true
+  },
+  {
+    id: "gender",
+    category: "personal",
+    text: "Gender / Pronouns",
+    type: "input",
+    required: true
+  },
+  {
+    id: "occupation",
+    category: "personal",
+    text: "Occupation",
+    type: "input"
+  },
+  {
+    id: "livingSituation",
+    category: "personal",
+    text: "Living Situation",
+    type: "radio",
     options: [
-      { value: "excellent", label: "Excellent - I sleep well most nights", score: 0 },
-      { value: "good", label: "Good - Generally sleep well", score: 1 },
-      { value: "fair", label: "Fair - Some difficulty sleeping", score: 2 },
-      { value: "poor", label: "Poor - Frequent sleep problems", score: 3 },
+      { value: "alone", label: "Alone" },
+      { value: "family", label: "With Family" },
+      { value: "roommates", label: "With Roommates" },
+      { value: "other", label: "Other" }
     ]
   },
   {
-    id: "mood1", 
+    id: "supportSystem",
+    category: "personal",
+    text: "Support System (select all that apply)",
+    type: "checkbox",
+    options: [
+      { value: "friends", label: "Friends" },
+      { value: "family", label: "Family" },
+      { value: "community", label: "Community" },
+      { value: "none", label: "None" }
+    ]
+  },
+  // Section 2: Presenting Concerns
+  {
+    id: "presentingConcerns",
+    category: "concerns",
+    text: "What brings you here today? (select all that apply)",
+    type: "checkbox",
+    options: [
+      { value: "mood", label: "Mood changes", score: 2 },
+      { value: "anxiety", label: "Anxiety / Stress", score: 2 },
+      { value: "sleep", label: "Sleep problems", score: 2 },
+      { value: "relationships", label: "Relationship issues", score: 1 },
+      { value: "other", label: "Other" }
+    ]
+  },
+  {
+    id: "issueDuration",
+    category: "concerns",
+    text: "How long have you been experiencing these issues?",
+    type: "radio",
+    options: [
+      { value: "month", label: "Less than a month", score: 1 },
+      { value: "1-3months", label: "1–3 months", score: 2 },
+      { value: "3-6months", label: "3–6 months", score: 3 },
+      { value: "6+months", label: "More than 6 months", score: 4 }
+    ]
+  },
+  {
+    id: "dailyLifeImpact",
+    category: "concerns",
+    text: "How are these issues affecting your daily life? (select all that apply)",
+    type: "checkbox",
+    options: [
+      { value: "work", label: "Work", score: 2 },
+      { value: "school", label: "School", score: 2 },
+      { value: "relationships", label: "Relationships", score: 2 },
+      { value: "physical", label: "Physical Health", score: 3 },
+      { value: "other", label: "Other" }
+    ]
+  },
+  // Section 3: Mood & Emotions
+  {
+    id: "currentMood",
     category: "mood",
-    text: "How would you describe your mood over the past two weeks?",
+    text: "Rate your current mood (0 = very low, 10 = very high)",
+    type: "number",
+    required: true
+  },
+  {
+    id: "frequentFeelings",
+    category: "mood",
+    text: "Do you often feel: (select all that apply)",
+    type: "checkbox",
     options: [
-      { value: "very_positive", label: "Very positive and happy", score: 0 },
-      { value: "mostly_positive", label: "Mostly positive", score: 1 },
-      { value: "mixed", label: "Mixed - some good days, some bad", score: 2 },
-      { value: "mostly_low", label: "Mostly low or sad", score: 3 },
+      { value: "hopeless", label: "Hopeless", score: 4 },
+      { value: "empty", label: "Empty", score: 3 },
+      { value: "overwhelmed", label: "Overwhelmed", score: 3 },
+      { value: "irritable", label: "Irritable", score: 2 },
+      { value: "none", label: "None of these", score: 0 }
     ]
   },
   {
-    id: "stress1",
-    category: "stress", 
-    text: "How often do you feel overwhelmed or stressed?",
+    id: "appetiteChanges",
+    category: "mood",
+    text: "Recent changes in appetite:",
+    type: "radio",
     options: [
-      { value: "rarely", label: "Rarely or never", score: 0 },
-      { value: "sometimes", label: "Sometimes", score: 1 },
-      { value: "often", label: "Often", score: 2 },
-      { value: "constantly", label: "Almost constantly", score: 3 },
+      { value: "increase", label: "Increase", score: 1 },
+      { value: "decrease", label: "Decrease", score: 2 },
+      { value: "none", label: "None", score: 0 }
     ]
   },
   {
-    id: "energy1",
-    category: "energy",
-    text: "How are your energy levels throughout the day?",
+    id: "sleepChanges",
+    category: "mood",
+    text: "Recent changes in sleep:",
+    type: "radio",
     options: [
-      { value: "high", label: "High energy most of the day", score: 0 },
-      { value: "moderate", label: "Moderate energy", score: 1 },
-      { value: "low", label: "Low energy but manageable", score: 2 },
-      { value: "very_low", label: "Very low energy, hard to function", score: 3 },
+      { value: "difficulty", label: "Difficulty falling asleep", score: 2 },
+      { value: "oversleeping", label: "Oversleeping", score: 2 },
+      { value: "none", label: "None", score: 0 }
     ]
   },
   {
-    id: "social1",
-    category: "social",
-    text: "How do you feel about your relationships and social connections?",
+    id: "energyChanges",
+    category: "mood",
+    text: "Recent changes in energy:",
+    type: "radio",
     options: [
-      { value: "strong", label: "Strong and supportive", score: 0 },
-      { value: "good", label: "Generally good", score: 1 },
-      { value: "mixed", label: "Some good, some challenging", score: 2 },
-      { value: "isolated", label: "Feel isolated or disconnected", score: 3 },
+      { value: "low", label: "Low", score: 3 },
+      { value: "high", label: "High", score: 1 },
+      { value: "normal", label: "Normal", score: 0 }
     ]
   },
   {
-    id: "anxiety1",
+    id: "lostInterest",
+    category: "mood",
+    text: "Have you lost interest in activities you usually enjoy?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 3 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  // Section 4: Anxiety & Stress
+  {
+    id: "nervousOnEdge",
     category: "anxiety",
-    text: "How often do you experience anxiety or worry?",
+    text: "Do you often feel nervous or on edge?",
+    type: "radio",
     options: [
-      { value: "rarely", label: "Rarely", score: 0 },
-      { value: "occasionally", label: "Occasionally", score: 1 },
-      { value: "frequently", label: "Frequently", score: 2 },
-      { value: "constantly", label: "Almost constantly", score: 3 },
+      { value: "yes", label: "Yes", score: 3 },
+      { value: "no", label: "No", score: 0 }
     ]
   },
   {
-    id: "coping1",
-    category: "coping",
-    text: "How well do you feel you're coping with daily challenges?",
+    id: "panicAttacks",
+    category: "anxiety",
+    text: "Do you experience panic attacks or sudden intense fear?",
+    type: "radio",
     options: [
-      { value: "very_well", label: "Very well - I handle things easily", score: 0 },
-      { value: "well", label: "Well - I manage most things", score: 1 },
-      { value: "struggling", label: "Struggling but getting by", score: 2 },
-      { value: "overwhelmed", label: "Feeling overwhelmed and unable to cope", score: 3 },
+      { value: "yes", label: "Yes", score: 4 },
+      { value: "no", label: "No", score: 0 }
     ]
   },
   {
-    id: "hope1",
-    category: "mood",
-    text: "How hopeful do you feel about the future?",
+    id: "anxietyTriggers",
+    category: "anxiety",
+    text: "Specific triggers for your anxiety (optional)",
+    type: "textarea"
+  },
+  {
+    id: "stressCoping",
+    category: "anxiety",
+    text: "How do you usually cope with stress?",
+    type: "textarea"
+  },
+  // Section 5: Trauma & Past Experiences
+  {
+    id: "traumaHistory",
+    category: "trauma",
+    text: "Have you experienced trauma (physical, emotional, sexual)?",
+    type: "radio",
     options: [
-      { value: "very_hopeful", label: "Very hopeful and optimistic", score: 0 },
-      { value: "hopeful", label: "Generally hopeful", score: 1 },
-      { value: "uncertain", label: "Uncertain about the future", score: 2 },
-      { value: "hopeless", label: "Feeling hopeless or pessimistic", score: 3 },
+      { value: "yes", label: "Yes", score: 4 },
+      { value: "no", label: "No", score: 0 }
     ]
+  },
+  {
+    id: "significantEvents",
+    category: "trauma",
+    text: "Significant life events affecting your mental health",
+    type: "textarea"
+  },
+  {
+    id: "familyHistory",
+    category: "trauma",
+    text: "Family history of mental illness",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 2 },
+      { value: "no", label: "No", score: 0 },
+      { value: "unsure", label: "Unsure", score: 1 }
+    ]
+  },
+  // Section 6: Substance Use & Habits
+  {
+    id: "substanceUse",
+    category: "substance",
+    text: "Do you use alcohol, tobacco, or recreational drugs?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 2 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  {
+    id: "substanceFrequency",
+    category: "substance",
+    text: "Frequency / Quantity (if applicable)",
+    type: "textarea"
+  },
+  {
+    id: "reductionAttempts",
+    category: "substance",
+    text: "Have you tried to reduce or stop using them?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes" },
+      { value: "no", label: "No" }
+    ]
+  },
+  // Section 7: Cognitive & Behavioral Symptoms
+  {
+    id: "concentrationIssues",
+    category: "cognitive",
+    text: "Difficulty concentrating or memory issues?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 2 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  {
+    id: "impulsiveBehavior",
+    category: "cognitive",
+    text: "Impulsive or risky behaviors?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 3 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  {
+    id: "repetitiveBehavior",
+    category: "cognitive",
+    text: "Repetitive or compulsive behaviors?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 2 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  // Section 8: Suicidal or Self-Harm Thoughts
+  {
+    id: "selfHarmThoughts",
+    category: "safety",
+    text: "Have you ever had thoughts of self-harm or suicide?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 5 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  {
+    id: "selfHarmAttempts",
+    category: "safety",
+    text: "Have you ever attempted self-harm or suicide?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 5 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  {
+    id: "currentSafety",
+    category: "safety",
+    text: "Do you currently feel unsafe with your thoughts or actions?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Yes", score: 5 },
+      { value: "no", label: "No", score: 0 }
+    ]
+  },
+  // Section 9: Goals & Expectations
+  {
+    id: "consultationGoals",
+    category: "goals",
+    text: "What do you hope to achieve from this consultation?",
+    type: "textarea",
+    required: true
+  },
+  {
+    id: "specificIssues",
+    category: "goals",
+    text: "Any specific issues you want help with first?",
+    type: "textarea"
   }
 ];
 
@@ -122,7 +359,7 @@ export default function Questionnaire() {
   const { isAuthenticated, isLoading } = useAuth();
   const [, navigate] = useLocation();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isCompleted, setIsCompleted] = useState(false);
 
   // Redirect to home if not authenticated
@@ -180,8 +417,17 @@ export default function Questionnaire() {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
-  const handleAnswerChange = (value: string) => {
+  const handleAnswerChange = (value: any) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: value }));
+  };
+
+  const handleCheckboxChange = (value: string, checked: boolean) => {
+    const currentValues = answers[currentQuestion.id] || [];
+    if (checked) {
+      setAnswers(prev => ({ ...prev, [currentQuestion.id]: [...currentValues, value] }));
+    } else {
+      setAnswers(prev => ({ ...prev, [currentQuestion.id]: currentValues.filter((v: string) => v !== value) }));
+    }
   };
 
   const handleNext = () => {
@@ -191,12 +437,35 @@ export default function Questionnaire() {
       // Submit questionnaire
       const responses = {};
       questions.forEach(q => {
-        if (answers[q.id]) {
+        if (answers[q.id] !== undefined) {
+          let answer, score = 0;
+          
+          if (q.type === 'checkbox') {
+            const selectedValues = answers[q.id] || [];
+            answer = selectedValues.map((val: string) => 
+              q.options?.find(opt => opt.value === val)?.label || val
+            ).join(', ');
+            score = selectedValues.reduce((total: number, val: string) => {
+              const option = q.options?.find(opt => opt.value === val);
+              return total + (option?.score || 0);
+            }, 0);
+          } else if (q.type === 'radio' || q.type === 'select') {
+            const option = q.options?.find(opt => opt.value === answers[q.id]);
+            answer = option?.label || answers[q.id];
+            score = option?.score || 0;
+          } else {
+            answer = answers[q.id];
+            if (q.id === 'currentMood') {
+              const moodValue = parseInt(answers[q.id]);
+              score = moodValue <= 3 ? 4 : moodValue <= 6 ? 2 : 0;
+            }
+          }
+          
           responses[q.id] = {
             question: q.text,
-            answer: q.options.find(opt => opt.value === answers[q.id])?.label,
+            answer,
             category: q.category,
-            score: q.options.find(opt => opt.value === answers[q.id])?.score || 0,
+            score,
           };
         }
       });
@@ -214,7 +483,9 @@ export default function Questionnaire() {
     }
   };
 
-  const canProceed = answers[currentQuestion?.id] !== undefined;
+  const canProceed = currentQuestion?.required ? 
+    (answers[currentQuestion?.id] !== undefined && answers[currentQuestion?.id] !== '') : 
+    true;
 
   if (isLoading) {
     return <div className="min-h-screen bg-white flex items-center justify-center">Loading...</div>;
@@ -344,23 +615,113 @@ export default function Questionnaire() {
               </h3>
               
               {/* Answer Options */}
-              <RadioGroup
-                value={answers[currentQuestion?.id] || ""}
-                onValueChange={handleAnswerChange}
-                className="space-y-3"
-              >
-                {currentQuestion?.options.map((option) => (
-                  <div key={option.value} className="flex items-center space-x-3 p-4 bg-white border border-purple-200 rounded-xl hover:bg-purple-50 cursor-pointer transition-colors">
-                    <RadioGroupItem value={option.value} id={option.value} />
-                    <Label 
-                      htmlFor={option.value} 
-                      className="flex-1 text-gray-900 cursor-pointer"
-                    >
-                      {option.label}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
+              {currentQuestion?.type === 'radio' && (
+                <RadioGroup
+                  value={answers[currentQuestion?.id] || ""}
+                  onValueChange={handleAnswerChange}
+                  className="space-y-3"
+                >
+                  {currentQuestion?.options?.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-3 p-4 bg-white border border-purple-200 rounded-xl hover:bg-purple-50 cursor-pointer transition-colors">
+                      <RadioGroupItem value={option.value} id={option.value} />
+                      <Label 
+                        htmlFor={option.value} 
+                        className="flex-1 text-gray-900 cursor-pointer"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
+              
+              {currentQuestion?.type === 'checkbox' && (
+                <div className="space-y-3">
+                  {currentQuestion?.options?.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-3 p-4 bg-white border border-purple-200 rounded-xl hover:bg-purple-50 transition-colors">
+                      <Checkbox 
+                        id={option.value}
+                        checked={(answers[currentQuestion?.id] || []).includes(option.value)}
+                        onCheckedChange={(checked) => handleCheckboxChange(option.value, checked as boolean)}
+                      />
+                      <Label 
+                        htmlFor={option.value} 
+                        className="flex-1 text-gray-900 cursor-pointer"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {currentQuestion?.type === 'input' && (
+                <Input
+                  value={answers[currentQuestion?.id] || ""}
+                  onChange={(e) => handleAnswerChange(e.target.value)}
+                  placeholder="Enter your answer"
+                  className="w-full p-4 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              )}
+              
+              {currentQuestion?.type === 'number' && (
+                <Input
+                  type="number"
+                  value={answers[currentQuestion?.id] || ""}
+                  onChange={(e) => handleAnswerChange(e.target.value)}
+                  placeholder={currentQuestion?.id === 'currentMood' ? '0-10' : 'Enter number'}
+                  min={currentQuestion?.id === 'currentMood' ? 0 : undefined}
+                  max={currentQuestion?.id === 'currentMood' ? 10 : undefined}
+                  className="w-full p-4 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              )}
+              
+              {currentQuestion?.type === 'textarea' && (
+                <Textarea
+                  value={answers[currentQuestion?.id] || ""}
+                  onChange={(e) => handleAnswerChange(e.target.value)}
+                  placeholder="Please provide details..."
+                  rows={4}
+                  className="w-full p-4 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                />
+              )}
+              
+              {currentQuestion?.type === 'select' && (
+                <Select value={answers[currentQuestion?.id] || ""} onValueChange={handleAnswerChange}>
+                  <SelectTrigger className="w-full p-4 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <SelectValue placeholder="Select an option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currentQuestion?.options?.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              
+              {/* Emergency Alert for Safety Questions */}
+              {currentQuestion?.category === 'safety' && answers[currentQuestion?.id] === 'yes' && (
+                <Card className="mt-4 bg-red-50 border-red-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-start space-x-3">
+                      <AlertTriangle className="text-red-600 flex-shrink-0 mt-1" size={20} />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-red-900 mb-2">Immediate Support Available</h4>
+                        <p className="text-sm text-red-800 mb-3">
+                          If you're having thoughts of self-harm, please reach out for help immediately:
+                        </p>
+                        <div className="space-y-2 text-sm">
+                          <p className="text-red-800"><strong>South Africa Crisis Line:</strong> 0800 567 567</p>
+                          <p className="text-red-800"><strong>Emergency Services:</strong> 10111</p>
+                          <p className="text-red-800"><strong>SMS Crisis Line:</strong> 31393</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </CardContent>
           </Card>
 
@@ -398,7 +759,7 @@ export default function Questionnaire() {
             <CardContent className="p-4">
               <h4 className="font-medium text-gray-900 mb-3">Assessment Areas</h4>
               <div className="grid grid-cols-2 gap-2 text-sm">
-                {["Sleep Quality", "Mood", "Stress Level", "Energy", "Social", "Anxiety", "Coping", "Hope"].map((area, index) => (
+                {["Personal Info", "Concerns", "Mood & Emotions", "Anxiety & Stress", "Trauma History", "Substance Use", "Cognitive", "Safety", "Goals"].map((area, index) => (
                   <div key={area} className="flex items-center space-x-2">
                     <div className={`w-2 h-2 rounded-full ${
                       index <= currentQuestionIndex ? 'bg-purple-500' : 'bg-gray-300'
@@ -419,7 +780,10 @@ export default function Questionnaire() {
                 <AlertTriangle className="text-orange-600 flex-shrink-0" size={20} />
                 <div className="flex-1">
                   <h4 className="font-medium text-orange-900">Need immediate support?</h4>
-                  <p className="text-sm text-orange-700">If you're experiencing thoughts of self-harm, please contact emergency services or a crisis hotline immediately.</p>
+                  <p className="text-sm text-orange-700 mb-2">If you're experiencing thoughts of self-harm, please contact emergency services or a crisis hotline immediately.</p>
+                  <div className="text-xs space-y-1">
+                    <p className="text-orange-700">South Africa: 0800 567 567 | Emergency: 10111</p>
+                  </div>
                 </div>
               </div>
             </CardContent>

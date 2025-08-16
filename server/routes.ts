@@ -39,6 +39,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { firstName, lastName, phoneNumber, location, profileData } = req.body;
+      
+      const updateData: any = { id: userId };
+      if (firstName !== undefined) updateData.firstName = firstName;
+      if (lastName !== undefined) updateData.lastName = lastName;
+      if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+      if (location !== undefined) updateData.location = location;
+      
+      const updatedUser = await storage.upsertUser(updateData);
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).json({ message: "Failed to update user" });
+    }
+  });
+
   // Clinics routes
   app.get("/api/clinics", isAuthenticated, async (req, res) => {
     try {
@@ -149,14 +168,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Calculate risk score based on responses (simple algorithm)
       let riskScore = 0;
-      const responseValues = Object.values(responses) as string[];
+      const responseValues = Object.values(responses);
       
-      responseValues.forEach((response: string) => {
-        if (response.includes('poor') || response.includes('very') || response.includes('severe')) {
+      responseValues.forEach((response: any) => {
+        const responseStr = String(response).toLowerCase();
+        if (responseStr.includes('poor') || responseStr.includes('very') || responseStr.includes('severe')) {
           riskScore += 25;
-        } else if (response.includes('fair') || response.includes('sometimes')) {
+        } else if (responseStr.includes('fair') || responseStr.includes('sometimes')) {
           riskScore += 15;
-        } else if (response.includes('good')) {
+        } else if (responseStr.includes('good')) {
           riskScore += 5;
         }
       });

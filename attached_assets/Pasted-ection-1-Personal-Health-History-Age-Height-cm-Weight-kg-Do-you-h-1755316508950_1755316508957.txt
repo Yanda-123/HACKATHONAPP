@@ -1,0 +1,71 @@
+ection 1: Personal Health & History
+
+Age: _______
+
+Height: _______ cm / Weight: _______ kg
+
+Do you have any chronic medical conditions? ☐ Yes ☐ No
+
+If yes, please specify: ________________________
+
+Are you currently taking any medications or supplements? ☐ Yes ☐ No
+
+If yes, please list: ________________________
+
+Do you have a family history of any of the following? (Check all that apply)
+☐ Diabetes ☐ Hypertension ☐ Heart disease ☐ Cancer ☐ Mental health disorders ☐ None
+
+Section 2: Lifestyle & Habits
+
+How often do you exercise?
+☐ Daily ☐ 3–5 times/week ☐ 1–2 times/week ☐ Rarely ☐ Never
+
+How would you rate your diet?
+☐ Balanced and healthy ☐ Mostly healthy ☐ Occasionally unhealthy ☐ Mostly unhealthy
+
+Do you consume alcohol? ☐ Yes ☐ No
+
+Frequency/Quantity: ________________________
+
+Do you smoke or use tobacco products? ☐ Yes ☐ No
+
+How many hours of sleep do you get per night on average? _______
+
+Section 3: Screenings & Vaccinations
+
+Have you had a Pap smear or cervical cancer screening? ☐ Yes ☐ No
+
+If yes, when was your last test? ________________________
+
+Have you had a mammogram or breast exam? ☐ Yes ☐ No
+
+If yes, when was your last test? ________________________
+
+Have you had your blood pressure, cholesterol, or blood sugar checked in the last year? ☐ Yes ☐ No
+
+Are your vaccinations up to date (flu, tetanus, COVID-19, HPV, etc.)? ☐ Yes ☐ No
+
+If no, specify which: ________________________
+
+Section 4: Mental & Emotional Wellbeing
+
+Do you experience frequent stress, anxiety, or low mood? ☐ Yes ☐ No
+
+Have you had a mental health screening in the past year? ☐ Yes ☐ No
+
+Are you currently receiving mental health support? ☐ Yes ☐ No
+
+Section 5: Reproductive & Maternal Health
+
+Are you currently pregnant or planning pregnancy? ☐ Yes ☐ No
+
+Do you take prenatal vitamins or supplements? ☐ Yes ☐ No
+
+Are you using any contraceptive methods? ☐ Yes ☐ No
+
+Section 6: Goals & Follow-Up
+
+What preventive health areas are you most concerned about?
+☐ Physical Health ☐ Mental Health ☐ Reproductive Health ☐ Nutrition ☐ Exercise ☐ Other: ________________________
+
+Are you interested in scheduling preventive care appointments through the app? ☐ Yes ☐ No
