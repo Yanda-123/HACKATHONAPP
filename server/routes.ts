@@ -322,14 +322,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const isYesterday = lastDate && 
             lastDate.toDateString() === yesterday.toDateString();
           
-          newStreak = isYesterday ? progress.streak + 1 : 1;
+          newStreak = isYesterday ? (progress.streak || 0) + 1 : 1;
         }
 
         [progress] = await db
           .update(userProgress)
           .set({
             streak: newStreak,
-            totalSessions: progress.totalSessions + 1,
+            totalSessions: (progress.totalSessions || 0) + 1,
             totalMinutes: progress.totalMinutes + duration,
             lastMeditationDate: today,
             updatedAt: today,
