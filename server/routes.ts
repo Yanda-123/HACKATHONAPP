@@ -88,9 +88,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/appointments", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      const { healthScreeningData, ...restData } = req.body;
+      
+      let notes = restData.notes || '';
+      
+      // If health screening data is provided, append it to notes
+      if (healthScreeningData) {
+        const healthSummary = `Health Screening Completed:\n` +
+          `Age: ${healthScreeningData.personalHealth?.age || 'N/A'}\n` +
+          `Chronic Conditions: ${healthScreeningData.personalHealth?.chronicConditions || 'N/A'}\n` +
+          `Medications: ${healthScreeningData.personalHealth?.medications || 'N/A'}\n` +
+          `Exercise Frequency: ${healthScreeningData.lifestyle?.exercise || 'N/A'}\n` +
+          `Mental Health Support: ${healthScreeningData.mentalHealth?.mentalHealthSupport || 'N/A'}\n` +
+          `Health Concerns: ${healthScreeningData.goals?.concerns?.join(', ') || 'N/A'}\n\n`;
+        
+        notes = healthSummary + (notes ? `\nAdditional Notes: ${notes}` : '');
+      }
+      
       const appointmentData = insertAppointmentSchema.parse({
-        ...req.body,
+        ...restData,
         userId,
+        notes,
       });
       
       const [newAppointment] = await db
